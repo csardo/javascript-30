@@ -62,13 +62,49 @@
       background: black;
       position: absolute;
       top: 50%;
+      transform-origin: right; /* pivot on the right side */
+      transform: rotate(90deg); /* start at 12 o clock */
+      transition: all 0.05s; /* move around the clock */
+      transition-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1); /* snaps past then settles */
     }
 
   </style>
 
   <script>
+  const hands = Array.from(document.getElementsByClassName('hand'));
+  const secHand = hands.find(e => e.classList.contains('second-hand'));
+  const minHand = hands.find(e => e.classList.contains('min-hand'));
+  const hourHand = hands.find(e => e.classList.contains('hour-hand'));
+ 
+  const calcDegress = (time, max) => ((time / max) * 360) + 90; // add the 90 because we transform it above in the css to start at 12
+  
+  // Retain last min and hour values so we don't re-transform every second.
+  let lastMin = -1;
+  let lastHour = -1;
+  
+  function moveHand() {
+    const now = new Date();
 
+    const seconds = now.getSeconds();
+    const secondsDegrees = calcDegress(seconds, 60);
+    secHand.style.transform = `rotate(${secondsDegrees}deg)`;
 
+    const mins = now.getMinutes();
+    if (lastMin !== mins) {
+      const minDegrees = calcDegress(mins, 60);
+      minHand.style.transform = `rotate(${minDegrees}deg)`;
+      lastMin = mins;
+    }
+
+    const hours = now.getHours();
+    if (lastHour !== hours) {
+      const hourDegrees = calcDegress(hours, 60);
+      hourHand.style.transform = `rotate(${hourDegrees}deg)`;
+      lastHour = hours; 
+    }
+  }
+
+  setInterval(moveHand, 1000);
   </script>
 </body>
 </html>
