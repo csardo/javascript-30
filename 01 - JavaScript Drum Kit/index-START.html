@@ -58,7 +58,43 @@
   <audio data-key="76" src="sounds/tink.wav"></audio>
 
 <script>
+const KEY_S = 83
+const KEY_D = 68
+const KEY_F = 70
+const KEY_G = 71
+const KEY_H = 72
+const KEY_J = 74
+const KEY_K = 75
+const KEY_L = 76
 
+window.addEventListener('keydown', playDrumkit);
+
+function playDrumkit(e) { // default first parameter is the event
+  let keyCode = e.keyCode;
+  let key = document.querySelector(`div[data-key="${keyCode}"]`);
+  
+  if (!key) return; // key did not correspond with a sound
+  key.classList.add('playing');
+
+  let audio = document.querySelector(`audio[data-key="${keyCode}"]`);
+  audio.currentTime = 0; // rewind to the start
+  audio.play();
+}
+
+const keys = document.querySelectorAll('.key');
+
+// when you have an array of elements, you cannot listen
+// to all of them, you have to loop through them and add 
+// an event listener to each
+keys.forEach(key => key.addEventListener('transitionend', removeTransition));
+
+function removeTransition(e) {
+  if (e.propertyName !== 'transform') return; // skip if not a transform transistion
+
+  // this is the element, it is always equal to whatever
+  // got called against it
+  this.classList.remove('playing');
+}
 </script>
 
 
