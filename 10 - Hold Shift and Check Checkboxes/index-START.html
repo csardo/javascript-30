@@ -96,6 +96,37 @@
   </div>
 
 <script>
+  const inbox = document.querySelector(".inbox");
+  const checkboxes = Array.from(inbox.querySelectorAll("input"));
+  let lastIdx = -1;
+  let idx = 0;
+
+  function handleCheck(e) {
+    const idx = this.idx;
+    // if shift key is down and if they are checking the box
+    if (e.shiftKey && this.checked) {
+      if (lastIdx >= 0) {
+        // the difference can be negative or positive.
+        let lower = Math.min(lastIdx, idx);
+        let higher = Math.max(lastIdx, idx);
+        
+        for (lower; lower <= higher; lower++){
+          checkboxes[lower].checked = true;
+        }
+      }
+    } else {
+      lastIdx = -1;
+    }
+
+    lastIdx = this.idx;
+  }
+
+  checkboxes.forEach(checkbox => {
+    const index = idx;
+    checkbox.addEventListener('click', handleCheck);
+    checkbox.idx = index;
+    idx++;
+  });
 </script>
 </body>
 </html>
