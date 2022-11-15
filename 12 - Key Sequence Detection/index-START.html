@@ -7,6 +7,22 @@
 </head>
 <body>
 <script>
+  const pressed = [];
+  const secretCode = 'csardo';
+  window.addEventListener('keyup', e => {
+    // trim the array to be the max you would ever need
+    pressed.push(e.key);
+
+    // once you get over the amount of the secret code, 
+    // it will push out the previous letters
+    pressed.splice(-secretCode.length - 1, pressed.length - secretCode.length);
+    
+    // make it into a string
+    if (pressed.join('').includes(secretCode)) {
+      console.log('ding ding');
+      cornify_add(); // adds silly rainbows and unicorns
+    }
+  });
 </script>
 </body>
 </html>
