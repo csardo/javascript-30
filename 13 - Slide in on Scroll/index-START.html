@@ -57,7 +57,33 @@
         if (callNow) func.apply(context, args);
       };
     }
+  
+    const images = document.querySelectorAll('img');
 
+    // when they are halfway into view, apply a class 'active' to update
+    // opacity and transparency
+    function checkSlide(e) {
+      images.forEach(image => {
+        // do a bunch of math to see if it's halfway through the image
+        const slideInAt = (window.scrollY + window.innerHeight) - image.height / 2;
+        
+        /// if you slide back up, slide again
+        const imageBottom = image.offsetTop + image.height;
+
+        const isHalfShown = slideInAt > image.offsetTop;
+
+        // if we're not scrolled past it, keep it on the page
+        const isNotScrolledPast = window.scrollY < imageBottom;
+
+        if (isHalfShown && isNotScrolledPast) {
+          image.classList.add('active');
+        } else {
+          image.classList.remove('active');
+        }
+      })
+    }
+
+    window.addEventListener('scroll', debounce(checkSlide));
   </script>
 
   <style>
