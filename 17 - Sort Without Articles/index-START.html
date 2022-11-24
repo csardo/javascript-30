@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Sort Without Articles</title>
+
 </head>
 <body>
 
@@ -46,9 +47,47 @@
   <ul id="bands"></ul>
 
 <script>
-const bands = ['The Plot in You', 'The Devil Wears Prada', 'Pierce the Veil', 'Norma Jean', 'The Bled', 'Say Anything', 'The Midway State', 'We Came as Romans', 'Counterparts', 'Oh, Sleeper', 'A Skylit Drive', 'Anywhere But Here', 'An Old Dog'];
+  const bands = ['The Plot in You', 'The Devil Wears Prada', 'Pierce the Veil', 'Norma Jean', 'The Bled', 'Say Anything', 'The Midway State', 'We Came as Romans', 'Counterparts', 'Oh, Sleeper', 'A Skylit Drive', 'Anywhere But Here', 'An Old Dog'];
+  // const startingStrings = ['The ', 'A ', 'An '];
 
+  // Sort without 'An' 'A' 'The'
+  const stripedTitleSort = (a, b) =>  a[1] < b[1] ? -1 : 1;
 
+  const stripTitle = function(title) {
+    const the = 'The ';
+    const a = 'A '
+    const an = 'An '
+
+    if (title.substring(0, the.length) === the) {
+      return title.substring(the.length);
+    } else if (title.substring(0, a.length) === a) {
+      return title.substring(a.length);
+    } else if (title.substring(0, an.length) === an) {
+      return title.substring(an.length);
+    } else {
+      return title;
+    }
+  };
+
+  // get all of the strings
+  // get the substring 0 -> length of THE is it equal to THE?
+  // do the same for all other strings
+
+  const sortedList = bands.map(band => {
+    return [band, stripTitle(band)];
+  });
+  
+  sortedList.sort(stripedTitleSort);
+
+  console.table(sortedList);
+
+  const parentList = document.querySelector('#bands');
+
+  sortedList.forEach(titleTuple => {
+    const el = document.createElement('li');
+    el.innerText = titleTuple[0];
+    parentList.appendChild(el);
+  })
 </script>
 
 </body>
