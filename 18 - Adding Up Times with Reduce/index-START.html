@@ -182,6 +182,39 @@
     </li>
   </ul>
 <script>
+  const timeNodes = Array.from(document.querySelectorAll('li'));
+  const timesMap = timeNodes.map(e => e.getAttribute('data-time'));
+
+  const toIntTime = function(str) {
+    const [min, sec] = str.split(':');
+
+    return [parseInt(min), parseInt(sec)];
+  }
+
+  const addTimes = function(prev, current, start) {
+    const [curMin, curSec] = toIntTime(current);
+    const [prevMin, prevSec] = toIntTime(prev);
+
+    let retMin = curMin + prevMin;
+    
+    let retSec = curSec + prevSec;
+
+    if (retSec > 60) {
+      retMin++;
+      retSec -= 60;
+    }
+
+    return `${retMin}:${retSec}`;
+  };
+
+  const totalTime = timesMap.reduce(addTimes, '00:00:00')
+
+  // Add hours
+  let hours = Math.floor(toIntTime(totalTime)[0] / 60);
+  let min = toIntTime(totalTime)[0] % 60;
+  let sec = toIntTime(totalTime)[1];
+
+  console.log(`${hours}:${min}:${sec}`);
 </script>
 </body>
 </html>
