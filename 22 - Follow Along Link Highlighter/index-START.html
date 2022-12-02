@@ -26,7 +26,31 @@
     </div>
 
   <script>
-    // 👀👀👀👀👀👀👀👀👀👀👀👀👀👀👀
+    function moveHighlight(e) {
+      const linkCoords = this.getBoundingClientRect();
+
+      // if user scrolls, the top and left will no longer match so 
+      // we need to account for that
+      const coords = {
+        width: linkCoords.width,
+        height: linkCoords.height,
+        top: linkCoords.top + window.scrollY,
+        left: linkCoords.left + window.screenX
+      }
+
+      highlight.style.width = `${coords.width}px`;
+      highlight.style.height = `${coords.height}px`;
+      highlight.style.transform = `translate(${coords.left}px, ${coords.top}px`;
+    }
+
+    // select all of the links
+    const links = document.querySelectorAll('a');
+    const highlight = document.createElement('span');
+    highlight.classList.add('highlight');
+    document.body.append(highlight);
+
+    // put listener on the mouse
+    links.forEach(e => e.addEventListener('mouseenter', moveHighlight));
   </script>
 </body>
 </html>
