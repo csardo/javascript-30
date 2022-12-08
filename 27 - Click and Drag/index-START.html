@@ -35,6 +35,40 @@
   </div>
 
 <script>
+    const slider = document.querySelector('.items');
+    let pressed = false;
+    let startX;
+    let scrollLeft; // you need to keep that in a var 
+
+    slider.addEventListener('mousedown', (event) => {
+      slider.classList.add('active');
+      pressed = true;
+
+      // you need the offset left in case any margin or padding is added
+      // to the item or else you will be off
+      startX = event.pageX - slider.offsetLeft;
+      scrollLeft = slider.scrollLeft;
+    });
+
+    slider.addEventListener('mouseup', (event) => {
+      slider.classList.remove('active');
+      pressed = false;
+      startX = -1;
+    });
+
+    slider.addEventListener('mouseleave', () => {
+      slider.classList.remove('active');
+      pressed = false;
+    });
+
+    slider.addEventListener('mousemove', (event) => {
+      event.preventDefault(); // stop if user is selecing text
+      if (pressed) {
+        const x = event.pageX - slider.offsetLeft;
+        const walk = (x - startX) * 3;
+        slider.scrollLeft = scrollLeft - walk;
+      }
+    });
 </script>
 
   </body>
